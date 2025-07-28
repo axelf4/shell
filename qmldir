@@ -1,0 +1,8 @@
+module MyShell
+singleton Time 1.0 Time.qml
+Bar 1.0 Bar.qml
+Wallpaper 1.0 Wallpaper.qml
+BatteryIcon 1.0 BatteryIcon.qml
+SysTray 1.0 SysTray.qml
+singleton NotificationManager 1.0 NotificationManager.qml
+NotificationWindow 1.0 NotificationWindow.qml
