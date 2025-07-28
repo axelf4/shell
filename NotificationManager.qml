@@ -52,7 +52,7 @@ Singleton {
 	}
 
 	function dismiss(index: int): void {
-		let { notification } = notifications.get(index)
-		notification.dismiss()
+		if (index < 0) return;
+		notifications.get(index).notification.dismiss();
 	}
 }

@@ -52,7 +52,7 @@ PanelWindow {
 		GridLayout {
 			id: content
 			columns: 2
-			readonly property double margin: 5
+			readonly property double margin: 10
 
 			Image {
 				readonly property int size: 45
@@ -70,17 +70,21 @@ PanelWindow {
 			}
 
 			Text {
-				text: notif.summary
-				color: "#ffffff"
+				Layout.preferredWidth: 0.75 * notif.width
 				Layout.topMargin: content.margin
+				text: notif.summary
+				elide: Text.ElideRight
+				font.bold: true
+				color: "#ffffff"
 			}
 
 			Text {
-				Layout.fillWidth: true
+				Layout.preferredWidth: 0.75 * notif.width
 				Layout.bottomMargin: content.margin
 				Layout.rightMargin: content.margin
 				textFormat: Text.MarkdownText
 				text: notif.body
+				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 				color: "#ffffff"
 			}
 		}
@@ -100,7 +104,6 @@ PanelWindow {
 		spacing: 10
 
 		add: Transition {
-			id: addTrans
 			NumberAnimation {
 				properties: "opacity,scale"
 				from: 0
@@ -109,13 +112,12 @@ PanelWindow {
 			}
 			NumberAnimation {
 				property: "x"
-				from: addTrans.ViewTransition.item.width
+				from: list.width
 				duration: 400
 			}
 		}
 
 		remove: Transition {
-			id: removeTrans
 			NumberAnimation {
 				properties: "opacity"
 				from: 1
@@ -125,7 +127,7 @@ PanelWindow {
 			}
 			NumberAnimation {
 				property: "x"
-				to: removeTrans.ViewTransition.item.width
+				to: list.width
 				duration: 400
 				easing.type: Easing.OutQuad
 			}
@@ -136,18 +138,6 @@ PanelWindow {
 			SequentialAnimation {
 				PauseAnimation {
 					duration: (dispTrans.ViewTransition.index - dispTrans.ViewTransition.targetIndexes[0]) * 100
-				}
-				ParallelAnimation {
-					NumberAnimation {
-						property: "x"
-						to: dispTrans.ViewTransition.item.x + 20
-						easing.type: Easing.OutQuad
-					}
-					NumberAnimation {
-						property: "y"
-						to: dispTrans.ViewTransition.item.y + 50
-						easing.type: Easing.OutQuad
-					}
 				}
 				NumberAnimation {
 					properties: "x,y"

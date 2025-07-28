@@ -5,6 +5,7 @@ import Quickshell
 import Quickshell.Services.UPower
 
 PanelWindow {
+	id: root
 	required property ShellScreen screen
 	readonly property int barWidth: 35
 	readonly property int blurWidth: 15
@@ -13,6 +14,9 @@ PanelWindow {
 		left: true
 		top: true
 		bottom: true
+	}
+	mask: Region {
+		item: bar
 	}
 
 	implicitWidth: barWidth + blurWidth
@@ -34,7 +38,7 @@ PanelWindow {
 	ColumnLayout {
 		id: bar
 		anchors.fill: parent
-		anchors.rightMargin: blurWidth
+		anchors.rightMargin: root.blurWidth
 
 		Text {
 			Layout.fillHeight: true
