@@ -40,7 +40,7 @@ PanelWindow {
 		anchors.fill: parent
 		anchors.rightMargin: root.blurWidth
 
-		Text {
+		Item {
 			Layout.fillHeight: true
 		}
 

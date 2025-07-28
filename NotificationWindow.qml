@@ -107,7 +107,7 @@ PanelWindow {
 			NumberAnimation {
 				properties: "opacity,scale"
 				from: 0
-				to: 1.0
+				to: 1
 				duration: 400
 			}
 			NumberAnimation {

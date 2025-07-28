@@ -168,7 +168,7 @@ Singleton {
 					anchors.horizontalCenter: username.horizontalCenter
 					anchors.top: username.bottom
 					anchors.topMargin: 20
-					padding: 12
+					padding: 8
 					implicitWidth: 250
 					implicitHeight: 40
 
