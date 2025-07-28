@@ -1,8 +1,11 @@
 //@ pragma UseQApplication
 
+import QtQuick
 import Quickshell
 
 Scope {
+	Component.onCompleted: [LockScreen]
+
 	NotificationWindow {}
 
 	Variants {

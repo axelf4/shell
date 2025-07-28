@@ -1,5 +1,6 @@
 module MyShell
 singleton Time 1.0 Time.qml
+singleton LockScreen 1.0 LockScreen.qml
 Bar 1.0 Bar.qml
 Wallpaper 1.0 Wallpaper.qml
 BatteryIcon 1.0 BatteryIcon.qml
