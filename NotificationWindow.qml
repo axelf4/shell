@@ -27,6 +27,7 @@ PanelWindow {
 		required property string body
 		radius: C.radius
 		color: C.surface
+		clip: true
 
 		width: parent?.width
 		implicitHeight: content.implicitHeight
@@ -45,6 +46,8 @@ PanelWindow {
 					NotificationManager.dismiss(notif.index);
 			}
 		}
+
+		Ripple {}
 
 		GridLayout {
 			id: content
