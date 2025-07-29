@@ -21,7 +21,9 @@ Image {
 			break;
 		}
 
-		const isLow = device.percentage <= 0.20, min = 0, max = 17, w = min + (max - min) * device.percentage, color = isCharging ? "#4f8700" : isLow ? "#d7005f" : "#232629", svg = `<?xml version="1.0" encoding="UTF-8"?>
+		const isLow = device.percentage <= 0.20, min = 0, max = 17, w = min + (max - min) * device.percentage;
+		const color = isCharging ? C.palette.green80 : isLow ? C.error : C._onSurface;
+		const svg = `<?xml version="1.0" encoding="UTF-8"?>
 <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
 	<path d="m5 10v12h21v-3c0.5 0 1-0.4 2-1v-4s-0.4-1-2-1v-3zm1 1h19v10h-19zm1 1v8h${w}l-2-8z" fill="${color}" />
 </svg>`;

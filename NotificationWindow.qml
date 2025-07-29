@@ -25,10 +25,8 @@ PanelWindow {
 		required property string image
 		required property string summary
 		required property string body
-		radius: 8
-		color: m3surfaceContainer
-
-		readonly property color m3surfaceContainer: "#231E23"
+		radius: C.radius
+		color: C.surface
 
 		width: parent?.width
 		implicitHeight: content.implicitHeight
@@ -52,10 +50,11 @@ PanelWindow {
 		GridLayout {
 			id: content
 			columns: 2
-			readonly property double margin: 10
+			columnSpacing: C.spacing.small
+			rowSpacing: C.spacing.normal
 
 			Image {
-				readonly property int size: 45
+				readonly property int size: 40
 
 				asynchronous: true
 				source: notif.image
@@ -64,28 +63,30 @@ PanelWindow {
 
 				Layout.rowSpan: 2
 				Layout.alignment: Qt.AlignTop
-				Layout.margins: content.margin
+				Layout.margins: C.spacing.normal
 				Layout.preferredWidth: size
 				Layout.preferredHeight: size
 			}
 
 			Text {
-				Layout.preferredWidth: 0.75 * notif.width
-				Layout.topMargin: content.margin
+				Layout.preferredWidth: 0.7 * notif.width
+				Layout.topMargin: C.spacing.normal
 				text: notif.summary
 				elide: Text.ElideRight
 				font.bold: true
-				color: "#ffffff"
+				font.pixelSize: C.fontSmall
+				color: C._onSurface
 			}
 
 			Text {
-				Layout.preferredWidth: 0.75 * notif.width
-				Layout.bottomMargin: content.margin
-				Layout.rightMargin: content.margin
+				Layout.preferredWidth: 0.7 * notif.width
+				Layout.bottomMargin: C.spacing.normal
+				Layout.rightMargin: C.spacing.normal
 				textFormat: Text.MarkdownText
 				text: notif.body
 				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-				color: "#ffffff"
+				font.pixelSize: C.fontTiny
+				color: C._onSurface
 			}
 		}
 	}
@@ -101,35 +102,39 @@ PanelWindow {
 		anchors.rightMargin: 10
 		anchors.bottomMargin: 10
 		implicitWidth: contentItem.childrenRect.width
-		spacing: 10
+		spacing: C.spacing.normal
 
 		add: Transition {
 			NumberAnimation {
 				properties: "opacity,scale"
 				from: 0
-				to: 1
-				duration: 400
+				duration: C.duration.medium
+				easing.type: Easing.BezierSpline
+				easing.bezierCurve: C.easing.emphasizedDecel
 			}
 			NumberAnimation {
 				property: "x"
 				from: list.width
-				duration: 400
+				duration: C.duration.medium
+				easing.type: Easing.BezierSpline
+				easing.bezierCurve: C.easing.emphasizedDecel
 			}
 		}
 
 		remove: Transition {
 			NumberAnimation {
-				properties: "opacity"
-				from: 1
+				property: "opacity"
 				to: 0
-				duration: 400
-				easing.type: Easing.OutQuad
+				duration: C.duration._short
+				easing.type: Easing.BezierSpline
+				easing.bezierCurve: C.easing.emphasizedAccel
 			}
 			NumberAnimation {
 				property: "x"
 				to: list.width
-				duration: 400
-				easing.type: Easing.OutQuad
+				duration: C.duration._short
+				easing.type: Easing.BezierSpline
+				easing.bezierCurve: C.easing.emphasizedAccel
 			}
 		}
 
@@ -137,12 +142,13 @@ PanelWindow {
 			id: dispTrans
 			SequentialAnimation {
 				PauseAnimation {
-					duration: (dispTrans.ViewTransition.index - dispTrans.ViewTransition.targetIndexes[0]) * 100
+					duration: 100 * (dispTrans.ViewTransition.index - dispTrans.ViewTransition.targetIndexes[0])
 				}
 				NumberAnimation {
 					properties: "x,y"
-					duration: 500
-					easing.type: Easing.OutBounce
+					duration: C.duration.medium2
+					easing.type: Easing.BezierSpline
+					easing.bezierCurve: C.easing.standard
 				}
 			}
 		}

@@ -4,8 +4,6 @@ import QtQuick
 import Quickshell
 
 Scope {
-	Component.onCompleted: [LockScreen]
-
 	NotificationWindow {}
 
 	Variants {
@@ -23,4 +21,6 @@ Scope {
 			}
 		}
 	}
+
+	Component.onCompleted: LockScreen
 }

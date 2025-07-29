@@ -16,7 +16,7 @@ Singleton {
 
 	Timer {
 		id: unlockTimer
-		interval: 1000
+		interval: C.duration._long
 		onTriggered: {
 			lock.locked = false;
 			root.locked = true; // Reset animation
@@ -80,9 +80,9 @@ Singleton {
 				opacity: root.locked ? 1 : 0
 				Behavior on opacity {
 					NumberAnimation {
-						duration: 1000
+						duration: C.duration._long
 						easing.type: Easing.BezierSpline
-						easing.bezierCurve: [0.2, 0, 0, 1, 1, 1]
+						easing.bezierCurve: C.easing.expressiveAccel
 					}
 				}
 
@@ -108,7 +108,7 @@ Singleton {
 					Layout.alignment: Qt.AlignHCenter
 					implicitWidth: 100
 					implicitHeight: 100
-					radius: 50
+					radius: C.radiusFull
 					color: "#C0BFC0"
 
 					/*
@@ -147,9 +147,9 @@ Singleton {
 				Text {
 					id: username
 					text: Quickshell.env("USER")
-					font.pixelSize: 24
+					font.pixelSize: C.fontLarge
 					font.weight: Font.Medium
-					color: "#F5F5F5"
+					color: C.primary
 					anchors.centerIn: parent
 				}
 
@@ -161,21 +161,21 @@ Singleton {
 					passwordMaskDelay: 0
 					enabled: !pam.active
 					placeholderText: "Enter Password"
-					placeholderTextColor: "#b7becf"
-					font.pixelSize: 16
-					color: "#F5F5F5"
+					placeholderTextColor: C._onSurfaceVariant
+					font.pixelSize: C.fontMedium
+					color: C._onSurface
 
 					anchors.horizontalCenter: username.horizontalCenter
 					anchors.top: username.bottom
-					anchors.topMargin: 20
+					anchors.topMargin: C.spacing.large
 					padding: 8
 					implicitWidth: 250
 					implicitHeight: 40
 
 					background: Rectangle {
-						radius: 7
-						color: "#C0BFC0"
-						opacity: 0.3
+						radius: C.radius
+						color: C.surface
+						opacity: 0.6
 					}
 
 					Component.onCompleted: forceActiveFocus()
@@ -185,19 +185,11 @@ Singleton {
 				Text {
 					text: pam.error
 					visible: pam.error !== ""
-					color: "#ee0000"
-					font.pixelSize: 14
+					color: C.error
+					font.pixelSize: C.fontSmall
 					anchors.top: input.bottom
 					anchors.left: input.left
-					anchors.topMargin: 5
-				}
-
-				Button {
-					text: "unlock me"
-					onClicked: lock.locked = false
-					anchors.top: input.bottom
-					anchors.right: input.right
-					anchors.topMargin: 5
+					anchors.topMargin: C.spacing.small
 				}
 			}
 		}

@@ -1,4 +1,5 @@
 module MyShell
+singleton C 1.0 C.qml
 singleton Time 1.0 Time.qml
 singleton LockScreen 1.0 LockScreen.qml
 Bar 1.0 Bar.qml

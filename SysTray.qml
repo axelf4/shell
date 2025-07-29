@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Effects
 import Quickshell
 import Quickshell.Widgets
 import Quickshell.Services.SystemTray
@@ -28,6 +29,7 @@ Column {
 		implicitHeight: 20
 
 		IconImage {
+			id: icon
 			source: {
 				let icon = item.modelData.icon;
 				if (icon.includes("?path=")) {
@@ -38,6 +40,11 @@ Column {
 			}
 			asynchronous: true
 			anchors.fill: parent
+
+			layer.enabled: true
+			layer.effect: MultiEffect {
+				saturation: -0.75
+			}
 		}
 	}
 
@@ -48,11 +55,21 @@ Column {
 
 	add: Transition {
         NumberAnimation {
-            properties: "scale"
+            properties: "opacity,scale"
             from: 0
-            to: 1
-			duration: 500
-			easing.type: Easing.OutBounce 
+			to: 1
+			duration: C.duration.medium
+			easing.type: Easing.BezierSpline
+			easing.bezierCurve: C.easing.emphasizedDecel
+        }
+    }
+
+	move: Transition {
+        NumberAnimation {
+            properties: "x,y"
+			duration: C.duration.medium2
+			easing.type: Easing.BezierSpline
+			easing.bezierCurve: C.easing.standard
         }
     }
 }

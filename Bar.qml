@@ -7,7 +7,6 @@ import Quickshell.Services.UPower
 PanelWindow {
 	id: root
 	required property ShellScreen screen
-	readonly property int barWidth: 35
 	readonly property int blurWidth: 15
 
 	anchors {
@@ -19,8 +18,8 @@ PanelWindow {
 		item: bar
 	}
 
-	implicitWidth: barWidth + blurWidth
-	exclusiveZone: barWidth
+	implicitWidth: C.barWidth + blurWidth
+	exclusiveZone: C.barWidth
 	color: "transparent"
 
 	RectangularShadow {
@@ -32,7 +31,7 @@ PanelWindow {
 
 	Rectangle {
 		anchors.fill: bar
-		color: "#c0d0f0"
+		color: C.surface
 	}
 
 	ColumnLayout {
@@ -55,8 +54,11 @@ PanelWindow {
 
 		Text {
 			text: Qt.formatDateTime(Time.date, "hh\nmm")
-			lineHeight: 0.75
+			lineHeight: 0.8
 			Layout.alignment: Qt.AlignHCenter
+			Layout.bottomMargin: C.spacing.small
+			font.pixelSize: C.fontSmall
+			color: C._onSurface
 		}
 	}
 }
