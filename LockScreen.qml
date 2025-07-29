@@ -79,10 +79,10 @@ Singleton {
 
 				opacity: root.locked ? 1 : 0
 				Behavior on opacity {
-					NumberAnimation {
+					OpacityAnimator {
 						duration: C.duration._long
 						easing.type: Easing.BezierSpline
-						easing.bezierCurve: C.easing.expressiveAccel
+						easing.bezierCurve: C.easing.emphasizedAccel
 					}
 				}
 

@@ -1,10 +1,8 @@
+import QtQuick
 import Quickshell
 import Quickshell.Wayland
-import QtQuick
 
 PanelWindow {
-	required property ShellScreen screen
-
 	WlrLayershell.layer: WlrLayer.Background
 	WlrLayershell.namespace: "wallpaper"
 	exclusionMode: ExclusionMode.Ignore

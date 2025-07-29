@@ -6,7 +6,6 @@ import Quickshell.Services.UPower
 
 PanelWindow {
 	id: root
-	required property ShellScreen screen
 	readonly property int blurWidth: 15
 
 	anchors {

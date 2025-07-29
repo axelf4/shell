@@ -34,7 +34,6 @@ PanelWindow {
 		MouseArea {
 			property double start: 0
 			anchors.fill: parent
-			acceptedButtons: Qt.LeftButton
 			drag.axis: Drag.XAxis
 			drag.target: notif
 			drag.minimumX: 0
@@ -112,8 +111,7 @@ PanelWindow {
 				easing.type: Easing.BezierSpline
 				easing.bezierCurve: C.easing.emphasizedDecel
 			}
-			NumberAnimation {
-				property: "x"
+			XAnimator {
 				from: list.width
 				duration: C.duration.medium
 				easing.type: Easing.BezierSpline
@@ -122,15 +120,13 @@ PanelWindow {
 		}
 
 		remove: Transition {
-			NumberAnimation {
-				property: "opacity"
+			OpacityAnimator {
 				to: 0
 				duration: C.duration._short
 				easing.type: Easing.BezierSpline
 				easing.bezierCurve: C.easing.emphasizedAccel
 			}
-			NumberAnimation {
-				property: "x"
+			XAnimator {
 				to: list.width
 				duration: C.duration._short
 				easing.type: Easing.BezierSpline

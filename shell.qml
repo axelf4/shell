@@ -1,9 +1,10 @@
 //@ pragma UseQApplication
+//@ pragma NativeTextRendering
 
 import QtQuick
 import Quickshell
 
-Scope {
+ShellRoot {
 	NotificationWindow {}
 
 	Variants {
