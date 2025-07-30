@@ -14,10 +14,10 @@ ShellRoot {
 			id: root
 			required property ShellScreen modelData
 
-			Bar {
+			Wallpaper {
 				screen: root.modelData
 			}
-			Wallpaper {
+			Bar {
 				screen: root.modelData
 			}
 		}

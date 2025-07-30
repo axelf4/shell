@@ -43,7 +43,7 @@ MouseArea {
 				target: ripple
 				property: "scale"
 				from: 0
-				to: 2
+				to: 2.5
 				duration: ripple.duration
 				easing.type: Easing.BezierSpline
 				easing.bezierCurve: C.easing.emphasizedDecel

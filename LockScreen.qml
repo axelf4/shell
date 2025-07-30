@@ -78,8 +78,16 @@ Singleton {
 				anchors.fill: parent
 
 				opacity: root.locked ? 1 : 0
+				scale: root.locked ? 1 : 1.2
 				Behavior on opacity {
 					OpacityAnimator {
+						duration: C.duration._long
+						easing.type: Easing.BezierSpline
+						easing.bezierCurve: C.easing.emphasizedAccel
+					}
+				}
+				Behavior on scale {
+					ScaleAnimator {
 						duration: C.duration._long
 						easing.type: Easing.BezierSpline
 						easing.bezierCurve: C.easing.emphasizedAccel
@@ -147,6 +155,7 @@ Singleton {
 				Text {
 					id: username
 					text: Quickshell.env("USER")
+					textFormat: Text.PlainText
 					font.pixelSize: C.fontLarge
 					font.weight: Font.Medium
 					color: C.primary
@@ -161,9 +170,10 @@ Singleton {
 					passwordMaskDelay: 0
 					enabled: !pam.active
 					placeholderText: "Enter Password"
-					placeholderTextColor: C._onSurfaceVariant
+					placeholderTextColor: C.primary
 					font.pixelSize: C.fontMedium
 					color: C._onSurface
+					focus: true
 
 					anchors.horizontalCenter: username.horizontalCenter
 					anchors.top: username.bottom
@@ -178,12 +188,12 @@ Singleton {
 						opacity: 0.6
 					}
 
-					Component.onCompleted: forceActiveFocus()
 					onAccepted: pam.login(text)
 				}
 
 				Text {
 					text: pam.error
+					textFormat: Text.PlainText
 					visible: pam.error !== ""
 					color: C.error
 					font.pixelSize: C.fontSmall

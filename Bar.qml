@@ -2,124 +2,170 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
 import Quickshell
+import Quickshell.Io
 import Quickshell.Services.UPower
 import Quickshell.Wayland
-/* import Quickshell.Hyprland */
 
 PanelWindow {
-	readonly property int popupWidth: 300
-	readonly property int blurWidth: 10
-
 	id: root
-
 	anchors {
-		left: true
 		top: true
 		bottom: true
+		left: true
 	}
-	implicitWidth: C.barWidth + popupWidth + blurWidth
-	exclusiveZone: C.barWidth
-	mask: Region {
-		item: bar
-	}
-	color: "transparent"
+	implicitWidth: C.barWidth
 
-	/* WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand */
-
-	PopupWindow {
+	PanelWindow {
 		id: popup
-		anchor.item: button
-		anchor.adjustment: PopupAdjustment.None
-		/* anchor.rect.x: -10 */
+		exclusionMode: ExclusionMode.Ignore
+		WlrLayershell.layer: WlrLayer.Overlay
+		WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
+		anchors {
+			top: true
+			right: true
+			bottom: true
+			left: true
+		}
+		visible: false
 		color: "transparent"
 
-		anchor.margins.top: -root.blurWidth
-		anchor.margins.right: -root.blurWidth
-		anchor.margins.bottom: -root.blurWidth
-		anchor.margins.left: -root.blurWidth
-
-		implicitWidth: launcher.implicitWidth
-		implicitHeight: launcher.implicitHeight
-
-		// TODO
-		/* HyprlandFocusGrab { */
-		/* 	active: popup.visible */
-		/* 	windows: [ popup ] */
-		/* 	onCleared: popup.visible = false */
-		/* } */
+		MouseArea {
+			anchors.fill: parent
+			onPressed: content.state = "hidden"
+		}
 
 		Item {
-			id: myitem
+			id: content
+			width: launcher.width
+			height: launcher.height
+			focus: true
+			state: "hidden"
 
-			anchors.fill: parent
-			anchors.margins: root.blurWidth
-
-			RectangularShadow {
-				anchors.fill: bod
-				blur: root.blurWidth
-				spread: 0
-				offset: Qt.vector2d(0, 3)
-			}
-
-			Rectangle {
-				id: bod
-				color: C.surfaceVariant
-				radius: C.radius
-				clip: true
-				anchors.fill: parent
-
-				Ripple {
-					id: ripple
-					enabled: false
+			Keys.onPressed: event => {
+				if (event.key === Qt.Key_Escape) {
+					content.state = "hidden";
+					event.accepted = true;
 				}
-			}
-
-			Launcher {
-				id: launcher
 			}
 
 			transform: Scale {
 				id: scale
 			}
 
-			ParallelAnimation {
-				id: popupAnimation
-				OpacityAnimator {
-					target: bod
-					from: 0
-					to: 1
-					duration: C.duration.medium
-					easing.type: Easing.BezierSpline
-					easing.bezierCurve: C.easing.emphasizedDecel
-				}
-				NumberAnimation {
-					target: scale
-					property: "xScale"
-					from: 0
-					to: 1
-					duration: C.duration.medium
-					easing.type: Easing.BezierSpline
-					easing.bezierCurve: C.easing.emphasizedDecel
+			RectangularShadow {
+				anchors.fill: parent
+				blur: 10
+				offset: Qt.vector2d(0, 3)
+			}
+			Rectangle {
+				anchors.fill: parent
+				color: C.surfaceContainer
+				radius: C.radius
+				clip: true
+
+				Ripple {
+					id: ripple
+					enabled: false
 				}
 			}
+			Launcher {
+				id: launcher
+			}
+
+			states: [
+				State {
+					name: "hidden"
+					PropertyChanges {
+						content {
+							opacity: 0
+						}
+						scale {
+							xScale: 0
+						}
+					}
+				},
+				State {
+					name: "visible"
+				}
+			]
+
+			transitions: [
+				Transition {
+					to: "visible"
+					SequentialAnimation {
+						ScriptAction {
+							script: popup.visible = true
+						}
+						ParallelAnimation {
+							OpacityAnimator {
+								target: content
+								duration: C.duration.medium
+								easing.type: Easing.BezierSpline
+								easing.bezierCurve: C.easing.emphasizedDecel
+							}
+							NumberAnimation {
+								target: scale
+								property: "xScale"
+								duration: C.duration.medium
+								easing.type: Easing.BezierSpline
+								easing.bezierCurve: C.easing.emphasizedDecel
+							}
+						}
+					}
+				},
+				Transition {
+					from: "visible"
+					to: "hidden"
+					SequentialAnimation {
+						ParallelAnimation {
+							OpacityAnimator {
+								target: content
+								duration: C.duration._short
+								easing.type: Easing.BezierSpline
+								easing.bezierCurve: C.easing.emphasizedAccel
+							}
+							NumberAnimation {
+								target: scale
+								property: "xScale"
+								duration: C.duration._short
+								easing.type: Easing.BezierSpline
+								easing.bezierCurve: C.easing.emphasizedAccel
+							}
+						}
+						ScriptAction {
+							script: popup.visible = false
+						}
+					}
+				}
+			]
+		}
+	}
+
+	function toggleLauncher(x: int, y: int): void {
+		if (content.state === "visible") {
+			content.state = "hidden";
+			return;
+		}
+		popup.screen = root.screen;
+		content.x = button.x;
+		content.y = button.y;
+		content.state = "visible";
+		ripple.play(x - content.x, y - content.y);
+		launcher.forceActiveFocus();
+	}
+
+	IpcHandler {
+		target: "launcher"
+
+		function toggle(): void {
+			let x = button.x + button.width / 2, y = button.y + button.height / 2;
+			root.toggleLauncher(x, y);
 		}
 	}
 
 	Rectangle {
 		anchors.fill: bar
 		color: C.surface
-
-		MouseArea {
-			anchors.fill: parent
-
-			onClicked: event => {
-				popup.visible = !popup.visible
-				popupAnimation.restart()
-				let p = ripple.mapFromItem(bar, event.x, event.y)
-				ripple.play(p.x, p.y)
-				myitem.forceActiveFocus()
-			}
-		}
 	}
 
 	ColumnLayout {
@@ -129,33 +175,27 @@ PanelWindow {
 		anchors.left: parent.left
 		width: C.barWidth
 
-		focus: popup.visible
-		Keys.onPressed: event => {
-			console.log(event);
-			if (event.key === Qt.Key_Escape)
-				popup.visible = false;
-			/* bar.focus = false; */
-			/* root.visible = false */
-			/* root.visible = true */
-			root.WlrLayershell.keyboardFocus = WlrKeyboardFocus.None
-		}
+		MouseArea {
+			cursorShape: Qt.PointingHandCursor
+			Layout.fillWidth: true
+			implicitHeight: width
 
-		Rectangle {
-			id: button
-			/* Layout.fillWidth: true */
-			implicitWidth: 26
-			implicitHeight: 26
-			radius: C.radius
-			color: C._onSurface
-			Layout.alignment: Qt.AlignHCenter
-			Layout.topMargin: C.spacing.small
+			onClicked: event => root.toggleLauncher(event.x, event.y)
 
-			Image {
+			Rectangle {
+				id: button
 				anchors.fill: parent
-				anchors.margins: 2
-				source: Quickshell.iconPath("nix-snowflake")
-				sourceSize.width: 2 * width
-				sourceSize.height: 2 * width
+				anchors.margins: C.spacing.small
+				radius: C.radius
+				color: C.primary
+
+				Image {
+					anchors.fill: parent
+					anchors.margins: 2
+					source: Quickshell.iconPath("nix-snowflake")
+					sourceSize.width: 2 * width
+					sourceSize.height: 2 * width
+				}
 			}
 		}
 
@@ -174,8 +214,9 @@ PanelWindow {
 
 		Text {
 			text: Qt.formatDateTime(Time.date, "hh\nmm")
+			textFormat: Text.PlainText
 			lineHeight: 0.8
-			Layout.alignment: Qt.AlignHCenter
+			Layout.alignment: Qt.AlignCenter
 			Layout.bottomMargin: C.spacing.small
 			font.pixelSize: C.fontSmall
 			color: C._onSurface

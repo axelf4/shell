@@ -74,6 +74,7 @@ PanelWindow {
 				Layout.preferredWidth: 0.7 * notif.width
 				Layout.topMargin: C.spacing.normal
 				text: notif.summary
+				textFormat: Text.PlainText
 				elide: Text.ElideRight
 				font.bold: true
 				font.pixelSize: C.fontSmall

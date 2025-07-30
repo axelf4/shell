@@ -8,10 +8,10 @@ PanelWindow {
 	exclusionMode: ExclusionMode.Ignore
 
 	anchors {
-		left: true
 		top: true
 		right: true
 		bottom: true
+		left: true
 	}
 
 	Image {
