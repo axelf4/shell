@@ -9,39 +9,33 @@ MouseArea {
 	anchors.fill: parent
 
 	function play(x: int, y: int): void {
-		translation.x = x - ripple.width / 2;
-		translation.y = y - ripple.height / 2;
+		ripple.x = x - ripple.width / 2;
+		ripple.y = y - ripple.height / 2;
 		animation.restart();
 	}
 
 	onPressed: event => play(event.x, event.y)
-	
+
 	Rectangle {
-		readonly property int duration: 1200
 		id: ripple
+		readonly property int duration: 1200
 		width: Math.max(parent.width, parent.height)
 		height: width
 		radius: 9999
 		opacity: 0
 		color: root.color
 
-		transform: Translate {
-			id: translation
-		}
-
 		ParallelAnimation {
 			id: animation
 			OpacityAnimator {
 				target: ripple
 				from: 1
-				to: 0
 				duration: ripple.duration
 				easing.type: Easing.BezierSpline
 				easing.bezierCurve: C.easing.emphasizedDecel
 			}
-			NumberAnimation {
+			ScaleAnimator {
 				target: ripple
-				property: "scale"
 				from: 0
 				to: 2.5
 				duration: ripple.duration
