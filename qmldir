@@ -3,9 +3,10 @@ singleton C 1.0 C.qml
 singleton Time 1.0 Time.qml
 Ripple 1.0 Ripple.qml
 singleton LockScreen 1.0 LockScreen.qml
-Bar 1.0 Bar.qml
 Wallpaper 1.0 Wallpaper.qml
+Bar 1.0 Bar.qml
 BatteryIcon 1.0 BatteryIcon.qml
 SysTray 1.0 SysTray.qml
+Launcher 1.0 Launcher.qml
 singleton NotificationManager 1.0 NotificationManager.qml
 NotificationWindow 1.0 NotificationWindow.qml
