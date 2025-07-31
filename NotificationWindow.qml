@@ -101,9 +101,7 @@ PanelWindow {
 		delegate: NotificationWidget {}
 
 		anchors.fill: parent
-		anchors.topMargin: 10
-		anchors.rightMargin: 10
-		anchors.bottomMargin: 10
+		anchors.margins: C.spacing.normal
 		implicitWidth: contentItem.childrenRect.width
 		spacing: C.spacing.normal
 
