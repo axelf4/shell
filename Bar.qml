@@ -164,16 +164,12 @@ PanelWindow {
 	}
 
 	Rectangle {
-		anchors.fill: bar
+		anchors.fill: parent
 		color: C.surface
 	}
 
 	ColumnLayout {
-		id: bar
-		anchors.top: parent.top
-		anchors.bottom: parent.bottom
-		anchors.left: parent.left
-		width: C.barWidth
+		anchors.fill: parent
 
 		MouseArea {
 			cursorShape: Qt.PointingHandCursor
