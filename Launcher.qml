@@ -68,8 +68,9 @@ FocusScope {
 
 		MouseArea {
 			anchors.fill: parent
-			hoverEnabled: true
-			/* onEntered: list.currentIndex = app.index */
+			cursorShape: Qt.PointingHandCursor
+			// FIXME: hoverEnabled: true
+			onEntered: list.currentIndex = app.index
 			onClicked: app.modelData.execute()
 		}
 	}
@@ -79,7 +80,9 @@ FocusScope {
 		model: ScriptModel {
 			values: {
 				const needle = input.text.toLowerCase();
-				DesktopEntries.applications.values.filter(app => !app.noDisplay && app.name.toLowerCase().startsWith(needle)).sort((a, b) => a.name.length - b.name.length);
+				DesktopEntries.applications.values //
+				.filter(app => !app.noDisplay && app.name.toLowerCase().startsWith(needle)) //
+				.sort((a, b) => a.name.length - b.name.length);
 			}
 			onValuesChanged: list.currentIndex = 0
 		}
