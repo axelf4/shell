@@ -70,17 +70,6 @@ FocusScope {
 			font.pixelSize: C.fontMedium
 			color: C._onSurface
 		}
-
-		MouseArea {
-			anchors.fill: parent
-			cursorShape: Qt.PointingHandCursor
-			// FIXME: hoverEnabled: true
-			onEntered: list.currentIndex = app.index
-			onClicked: {
-				app.modelData.execute();
-				root.finished();
-			}
-		}
 	}
 
 	ListView {
@@ -107,5 +96,18 @@ FocusScope {
 		anchors.left: parent.left
 		anchors.topMargin: C.spacing.large
 		spacing: 0
+
+		MouseArea {
+			anchors.fill: parent
+			cursorShape: Qt.PointingHandCursor
+			hoverEnabled: true
+			onPositionChanged: mouse => {
+				list.currentIndex = list.indexAt(mouse.x, list.contentY + mouse.y);
+			}
+			onClicked: mouse => {
+				list.itemAt(mouse.x, list.contentY + mouse.y)?.modelData.execute();
+				root.finished();
+			}
+		}
 	}
 }
