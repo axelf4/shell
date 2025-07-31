@@ -3,7 +3,6 @@ import QtQuick.Layouts
 import QtQuick.Effects
 import Quickshell
 import Quickshell.Io
-import Quickshell.Services.UPower
 import Quickshell.Wayland
 
 PanelWindow {
@@ -204,7 +203,6 @@ PanelWindow {
 		}
 
 		BatteryIcon {
-			device: UPower.displayDevice
 			Layout.alignment: Qt.AlignHCenter
 		}
 

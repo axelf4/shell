@@ -1,9 +1,8 @@
 import QtQuick
-import QtQuick.Controls
 import Quickshell.Services.UPower
 
 Image {
-	required property UPowerDevice device
+	property UPowerDevice device: UPower.displayDevice
 
 	visible: device.isLaptopBattery
 	fillMode: Image.PreserveAspectFit
