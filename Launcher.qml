@@ -1,10 +1,15 @@
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Controls
 import Quickshell
 
 FocusScope {
+	id: root
 	width: 500
 	height: 400
+
+	signal finished
 
 	TextField {
 		id: input
@@ -29,11 +34,11 @@ FocusScope {
 				return;
 			list.currentItem.modelData.execute();
 			clear();
+			root.finished();
 		}
 		Keys.onPressed: event => {
-			if (event.key === Qt.Key_Backspace && text === "") {
-				console.log("exit...");
-			}
+			if (event.key === Qt.Key_Backspace && text === "")
+				root.finished();
 		}
 		Keys.forwardTo: [list]
 	}
@@ -71,7 +76,10 @@ FocusScope {
 			cursorShape: Qt.PointingHandCursor
 			// FIXME: hoverEnabled: true
 			onEntered: list.currentIndex = app.index
-			onClicked: app.modelData.execute()
+			onClicked: {
+				app.modelData.execute();
+				root.finished();
+			}
 		}
 	}
 

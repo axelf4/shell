@@ -69,6 +69,7 @@ PanelWindow {
 			}
 			Launcher {
 				id: launcher
+				onFinished: content.state = "hidden"
 			}
 
 			states: [
