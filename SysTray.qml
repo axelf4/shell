@@ -10,6 +10,10 @@ Column {
 		required property SystemTrayItem modelData
 
 		acceptedButtons: Qt.LeftButton | Qt.RightButton
+		cursorShape: Qt.PointingHandCursor
+		width: 20
+		height: width
+
 		onClicked: event => {
 			switch (event.button) {
 			case Qt.LeftButton: modelData.activate(); break;
@@ -24,9 +28,6 @@ Column {
 			anchor.item: item
 			anchor.edges: Edges.Top | Edges.Right
 		}
-
-		implicitWidth: 20
-		implicitHeight: 20
 
 		IconImage {
 			id: icon
