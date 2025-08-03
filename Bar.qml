@@ -25,6 +25,7 @@ PanelWindow {
 			bottom: true
 			left: true
 		}
+		screen: root.screen
 		visible: false
 		color: "transparent"
 
@@ -35,21 +36,12 @@ PanelWindow {
 
 		Item {
 			id: content
-			width: launcher.width
-			height: launcher.height
-			focus: true
-			state: "hidden"
-
-			Keys.onPressed: event => {
-				if (event.key === Qt.Key_Escape) {
-					content.state = "hidden";
-					event.accepted = true;
-				}
-			}
-
+			width: loader.width
+			height: loader.height
 			transform: Scale {
 				id: scale
 			}
+			state: "hidden"
 
 			RectangularShadow {
 				anchors.fill: parent
@@ -60,16 +52,22 @@ PanelWindow {
 				anchors.fill: parent
 				color: C.surfaceContainer
 				radius: C.radius
-				clip: true
 
 				Ripple {
 					id: ripple
+					clip: true
 					enabled: false
 				}
 			}
-			Launcher {
-				id: launcher
-				onFinished: content.state = "hidden"
+			Loader {
+				id: loader
+				focus: true
+			}
+			Connections {
+				target: loader.item
+				function onFinished(): void {
+					content.state = "hidden";
+				}
 			}
 
 			states: [
@@ -146,28 +144,35 @@ PanelWindow {
 					}
 				}
 			]
+
+			Keys.onPressed: event => {
+				if (event.key === Qt.Key_Escape) {
+					content.state = "hidden";
+					event.accepted = true;
+				}
+			}
 		}
 	}
 
-	function toggleLauncher(x: int, y: int): void {
+	function togglePopup(button: Item, src: string): void {
 		if (content.state === "visible") {
 			content.state = "hidden";
 			return;
 		}
-		popup.screen = root.screen;
-		content.x = button.x;
-		content.y = button.y;
+		loader.source = src;
+		let p = button.mapToGlobal(0, 0);
+		content.x = p.x;
+		content.y = p.y + content.height > popup.screen.height //
+		? p.y + button.height - content.height : p.y;
 		content.state = "visible";
-		ripple.play(x - content.x, y - content.y);
-		launcher.forceActiveFocus();
+		ripple.play(button.width / 2, p.y + button.height / 2 - content.y);
 	}
 
 	IpcHandler {
 		target: "launcher"
 
 		function toggle(): void {
-			let x = button.x + button.width / 2, y = button.y + button.height / 2;
-			root.toggleLauncher(x, y);
+			root.togglePopup(startButton, "Launcher.qml");
 		}
 	}
 
@@ -184,10 +189,8 @@ PanelWindow {
 			Layout.fillWidth: true
 			implicitHeight: width
 
-			onClicked: event => root.toggleLauncher(event.x, event.y)
-
 			Rectangle {
-				id: button
+				id: startButton
 				anchors.fill: parent
 				anchors.margins: C.spacing.small
 				radius: C.radius
@@ -198,9 +201,11 @@ PanelWindow {
 					anchors.margins: 2
 					source: Quickshell.iconPath("nix-snowflake")
 					sourceSize.width: 2 * width
-					sourceSize.height: 2 * width
+					sourceSize.height: 2 * height
 				}
 			}
+
+			onClicked: event => root.togglePopup(startButton, "Launcher.qml")
 		}
 
 		Item {

@@ -4,7 +4,7 @@ import QtQuick
 import QtQuick.Controls
 import Quickshell
 
-FocusScope {
+Item {
 	id: root
 	width: 500
 	height: 400
@@ -29,13 +29,7 @@ FocusScope {
 		color: C._onSurface
 		font.pixelSize: C.fontMedium
 
-		onAccepted: {
-			if (!list.currentItem)
-				return;
-			list.currentItem.modelData.execute();
-			clear();
-			root.finished();
-		}
+		onAccepted: list.currentItem?.launch();
 		Keys.onPressed: event => {
 			if (event.key === Qt.Key_Backspace && text === "")
 				root.finished();
@@ -69,6 +63,12 @@ FocusScope {
 			font.bold: app.ListView.isCurrentItem
 			font.pixelSize: C.fontMedium
 			color: C._onSurface
+		}
+
+		function launch(): void {
+			modelData.execute();
+			input.clear();
+			root.finished();
 		}
 	}
 
@@ -104,10 +104,7 @@ FocusScope {
 			onPositionChanged: mouse => {
 				list.currentIndex = list.indexAt(mouse.x, list.contentY + mouse.y);
 			}
-			onClicked: mouse => {
-				list.itemAt(mouse.x, list.contentY + mouse.y)?.modelData.execute();
-				root.finished();
-			}
+			onClicked: mouse => list.itemAt(mouse.x, list.contentY + mouse.y)?.launch()
 		}
 	}
 }
