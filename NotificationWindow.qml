@@ -1,5 +1,4 @@
 import QtQuick
-import QtQuick.Layouts
 import Quickshell
 
 PanelWindow {
@@ -27,10 +26,9 @@ PanelWindow {
 		required property string body
 		radius: C.radius
 		color: C.surface
-		clip: true
 
 		width: parent?.width
-		implicitHeight: content.implicitHeight
+		height: body.y + body.height + C.spacing.normal
 
 		MouseArea {
 			property double start: 0
@@ -38,6 +36,7 @@ PanelWindow {
 			drag.axis: Drag.XAxis
 			drag.target: notif
 			drag.minimumX: 0
+			hoverEnabled: true
 			onEntered: notif.timer.stop()
 			onClicked: NotificationManager.dismiss(notif.index)
 			onPressed: mouse => start = mouse.x
@@ -47,49 +46,49 @@ PanelWindow {
 			}
 		}
 
-		Ripple {}
+		Ripple {
+			clip: true
+		}
 
-		GridLayout {
-			id: content
-			columns: 2
-			columnSpacing: C.spacing.small
-			rowSpacing: C.spacing.normal
+		Image {
+			id: icon
+			asynchronous: true
+			source: notif.image
+			sourceSize.width: width
+			sourceSize.height: height
+			x: C.spacing.normal
+			y: C.spacing.normal
+			width: 40
+			height: width
+		}
 
-			Image {
-				readonly property int size: 40
+		Text {
+			id: summary
+			textFormat: Text.PlainText
+			text: notif.summary
+			elide: Text.ElideRight
+			font.bold: true
+			font.pixelSize: C.fontSmall
+			color: C._onSurface
+			y: C.spacing.normal
+			anchors.left: icon.right
+			anchors.leftMargin: C.spacing.normal
+			width: parent.width - x - C.spacing.normal
+		}
 
-				asynchronous: true
-				source: notif.image
-				sourceSize.width: size
-				sourceSize.height: size
-
-				Layout.rowSpan: 2
-				Layout.alignment: Qt.AlignTop
-				Layout.margins: C.spacing.normal
-				Layout.preferredWidth: size
-				Layout.preferredHeight: size
-			}
-
-			Text {
-				Layout.preferredWidth: 0.7 * notif.width
-				Layout.topMargin: C.spacing.normal
-				text: notif.summary
-				textFormat: Text.PlainText
-				elide: Text.ElideRight
-				font.bold: true
-				font.pixelSize: C.fontSmall
-				color: C._onSurface
-			}
-
-			Text {
-				Layout.preferredWidth: 0.7 * notif.width
-				Layout.bottomMargin: C.spacing.normal
-				Layout.rightMargin: C.spacing.normal
-				textFormat: Text.MarkdownText
-				text: notif.body
-				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-				font.pixelSize: C.fontTiny
-				color: C._onSurface
+		Text {
+			id: body
+			textFormat: Text.MarkdownText
+			text: notif.body
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			font.pixelSize: C.fontTiny
+			color: C._onSurface
+			anchors {
+				top: summary.bottom
+				right: parent.right
+				left: summary.left
+				topMargin: C.spacing.small
+				rightMargin: C.spacing.normal
 			}
 		}
 	}
@@ -102,7 +101,6 @@ PanelWindow {
 
 		anchors.fill: parent
 		anchors.margins: C.spacing.normal
-		implicitWidth: contentItem.childrenRect.width
 		spacing: C.spacing.normal
 
 		add: Transition {
