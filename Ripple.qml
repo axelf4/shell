@@ -1,9 +1,7 @@
 import QtQuick
 
 MouseArea {
-	id: root
-	property color color: C._onSurfaceVariant
-
+	property alias color: ripple.color
 	propagateComposedEvents: true
 	acceptedButtons: Qt.LeftButton
 	anchors.fill: parent
@@ -18,19 +16,19 @@ MouseArea {
 
 	Rectangle {
 		id: ripple
-		readonly property int duration: 1200
 		width: Math.max(parent.width, parent.height)
 		height: width
 		radius: 9999
 		opacity: 0
-		color: root.color
+		color: C._onSurfaceVariant
 
 		ParallelAnimation {
 			id: animation
+			readonly property int duration: 1200
 			OpacityAnimator {
 				target: ripple
 				from: 1
-				duration: ripple.duration
+				duration: animation.duration
 				easing.type: Easing.BezierSpline
 				easing.bezierCurve: C.easing.emphasizedDecel
 			}
@@ -38,7 +36,7 @@ MouseArea {
 				target: ripple
 				from: 0
 				to: 2.5
-				duration: ripple.duration
+				duration: animation.duration
 				easing.type: Easing.BezierSpline
 				easing.bezierCurve: C.easing.emphasizedDecel
 			}
