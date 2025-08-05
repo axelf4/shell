@@ -2,7 +2,6 @@ pragma ComponentBehavior: Bound
 pragma Singleton
 
 import QtQuick
-import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Effects
 import Quickshell
@@ -11,16 +10,10 @@ import Quickshell.Wayland
 import Quickshell.Services.Pam
 
 Singleton {
-	id: root
-	property bool locked: true
-
 	Timer {
 		id: unlockTimer
 		interval: C.duration._long
-		onTriggered: {
-			lock.locked = false;
-			root.locked = true; // Reset animation
-		}
+		onTriggered: lock.unlocking = lock.locked = false
 	}
 
 	PamContext {
@@ -36,13 +29,11 @@ Singleton {
 		}
 
 		onCompleted: status => {
-			const success = status === PamResult.Success;
-			if (success) {
-				root.locked = false;
+			if (status === PamResult.Success) {
+				lock.unlocking = true;
 				unlockTimer.start();
-			} else {
+			} else
 				error = "Invalid password";
-			}
 		}
 
 		function login(password: string): void {
@@ -55,7 +46,7 @@ Singleton {
 		target: "lockscreen"
 
 		function lock(): void {
-			root.locked = lock.locked = true;
+			lock.locked = true;
 		}
 		function unlock(): void {
 			lock.locked = false;
@@ -64,6 +55,7 @@ Singleton {
 
 	WlSessionLock {
 		id: lock
+		property bool unlocking: false
 
 		WlSessionLockSurface {
 			id: surface
@@ -76,9 +68,9 @@ Singleton {
 
 			Item {
 				anchors.fill: parent
+				opacity: lock.unlocking ? 0 : 1
+				scale: lock.unlocking ? 1.2 : 1
 
-				opacity: root.locked ? 1 : 0
-				scale: root.locked ? 1 : 1.2
 				Behavior on opacity {
 					OpacityAnimator {
 						duration: C.duration._long
@@ -109,47 +101,6 @@ Singleton {
 						blur: 1
 						blurMax: 48
 					}
-				}
-
-				// User avatar/icon
-				Rectangle {
-					Layout.alignment: Qt.AlignHCenter
-					implicitWidth: 100
-					implicitHeight: 100
-					radius: C.radiusFull
-					color: "#C0BFC0"
-
-					/*
-					  Image {
-					  id: avatarImage
-					  anchors.fill: parent
-					  anchors.margins: 4
-					  source: Settings.settings.profileImage
-					  fillMode: Image.PreserveAspectCrop
-					  visible: false // Only show the masked version
-					  asynchronous: true
-					  }
-					  // Fallback icon
-					  Text {
-					  anchors.centerIn: parent
-					  text: "person"
-					  font.family: "Material Symbols Outlined"
-					  font.pixelSize: 32
-					  color: Theme.onAccent
-					  visible: Settings.settings.profileImage === ""
-					  }
-					  // Glow effect
-					  layer.enabled: true
-					  layer.effect: Glow {
-					  color: Theme.accentPrimary
-					  radius: 8
-					  samples: 16
-					  }
-					*/
-
-					anchors.horizontalCenter: username.horizontalCenter
-					anchors.bottom: username.top
-					anchors.bottomMargin: 5
 				}
 
 				Text {
@@ -194,7 +145,6 @@ Singleton {
 				Text {
 					text: pam.error
 					textFormat: Text.PlainText
-					visible: pam.error !== ""
 					color: C.error
 					font.pixelSize: C.fontSmall
 					anchors.top: input.bottom
