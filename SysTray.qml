@@ -9,7 +9,7 @@ Column {
 		id: item
 		required property SystemTrayItem modelData
 
-		acceptedButtons: Qt.LeftButton | Qt.RightButton
+		acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
 		cursorShape: Qt.PointingHandCursor
 		width: 20
 		height: width
@@ -17,6 +17,7 @@ Column {
 		onClicked: event => {
 			switch (event.button) {
 			case Qt.LeftButton: modelData.activate(); break;
+			case Qt.MiddleButton: modelData.secondaryActivate(); break;
 			case Qt.RightButton: if (modelData.hasMenu) menu.open(); break;
 			}
 			event.accepted = true;
