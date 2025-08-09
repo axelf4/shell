@@ -84,14 +84,6 @@ PanelWindow {
 				},
 				State {
 					name: "visible"
-					PropertyChanges {
-						content {
-							opacity: 1
-						}
-						scale {
-							xScale: 1
-						}
-					}
 				}
 			]
 
