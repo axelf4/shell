@@ -1,7 +1,6 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
-import QtQuick.Controls
 import Quickshell
 
 Item {
@@ -13,21 +12,12 @@ Item {
 
 	TextField {
 		id: input
+		placeholderText: "Enter Application"
 		focus: true
 		anchors.top: parent.top
 		anchors.right: parent.right
 		anchors.left: parent.left
 		anchors.margins: C.spacing.large
-		padding: C.spacing.normal
-
-		placeholderText: "Enter Application"
-		placeholderTextColor: C.primary
-		background: Rectangle {
-			color: C.surfaceContainerHighest
-			radius: 4
-		}
-		color: C._onSurface
-		font.pixelSize: C.fontMedium
 
 		onAccepted: list.currentItem?.launch();
 		Keys.onPressed: event => {

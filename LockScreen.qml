@@ -2,7 +2,6 @@ pragma ComponentBehavior: Bound
 pragma Singleton
 
 import QtQuick
-import QtQuick.Controls
 import QtQuick.Effects
 import Quickshell
 import Quickshell.Io
@@ -115,29 +114,19 @@ Singleton {
 
 				TextField {
 					id: input
-					verticalAlignment: TextInput.AlignVCenter
+					placeholderText: "Enter Password"
 					echoMode: TextInput.Password
 					passwordCharacter: "●"
 					passwordMaskDelay: 0
 					enabled: !pam.active
-					placeholderText: "Enter Password"
-					placeholderTextColor: C.primary
-					font.pixelSize: C.fontMedium
-					color: C._onSurface
 					focus: true
+					backgroundColor: C.surface
+					background.opacity: 0.6
 
 					anchors.horizontalCenter: username.horizontalCenter
 					anchors.top: username.bottom
 					anchors.topMargin: C.spacing.large
-					padding: 8
-					implicitWidth: 250
-					implicitHeight: 40
-
-					background: Rectangle {
-						radius: C.radius
-						color: C.surface
-						opacity: 0.6
-					}
+					width: 250
 
 					onAccepted: pam.login(text)
 				}
