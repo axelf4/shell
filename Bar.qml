@@ -1,3 +1,5 @@
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
@@ -174,31 +176,53 @@ PanelWindow {
 		color: C.surface
 	}
 
+	component IconButton: MouseArea {
+		id: mouseArea
+		required property string popupSource
+		default property alias content: button.children
+
+		cursorShape: Qt.PointingHandCursor
+		hoverEnabled: true
+		Layout.fillWidth: true
+		implicitHeight: width
+
+		Rectangle {
+			anchors.fill: button
+			anchors.margins: -4
+			radius: C.radius
+			color: C.primary
+			visible: mouseArea.containsMouse
+			opacity: mouseArea.pressed ? 0.12 : 0.08
+		}
+
+		Item {
+			id: button
+			anchors.fill: parent
+			anchors.margins: C.spacing.small
+		}
+
+		onClicked: event => root.togglePopup(button, popupSource)
+	}
+
 	ColumnLayout {
 		anchors.fill: parent
+		spacing: 0
 
-		MouseArea {
-			cursorShape: Qt.PointingHandCursor
-			Layout.fillWidth: true
-			implicitHeight: width
-
-			Rectangle {
+		IconButton {
+			popupSource: "Launcher.qml"
+			Image {
 				id: startButton
 				anchors.fill: parent
-				anchors.margins: C.spacing.small
-				radius: C.radius
-				color: C.primary
+				source: Quickshell.iconPath("nix-snowflake-white")
+				sourceSize.width: 2 * width
+				sourceSize.height: 2 * height
 
-				Image {
-					anchors.fill: parent
-					anchors.margins: 2
-					source: Quickshell.iconPath("nix-snowflake")
-					sourceSize.width: 2 * width
-					sourceSize.height: 2 * height
+				layer.enabled: true
+				layer.effect: MultiEffect {
+					colorization: 1
+					colorizationColor: C._onSurface
 				}
 			}
-
-			onClicked: event => root.togglePopup(startButton, "Launcher.qml")
 		}
 
 		Item {
@@ -209,25 +233,35 @@ PanelWindow {
 			Layout.alignment: Qt.AlignHCenter
 		}
 
-		MouseArea {
-			cursorShape: Qt.PointingHandCursor
-			Layout.fillWidth: true
-			implicitHeight: width
-
+		IconButton {
+			popupSource: "Mixer.qml"
 			Image {
-				id: bluetoothButton
+				anchors.fill: parent
+				source: Quickshell.iconPath("nix-snowflake-white")
+				sourceSize.width: 2 * width
+				sourceSize.height: 2 * height
+
+				layer.enabled: true
+				layer.effect: MultiEffect {
+					colorization: 1
+					colorizationColor: C._onSurface
+				}
+			}
+		}
+
+		IconButton {
+			popupSource: "BluetoothWidget.qml"
+			Image {
 				source: "bluetooth.svg"
 				sourceSize.width: 4 * 32
 				sourceSize.height: 4 * 32
 				fillMode: Image.PreserveAspectCrop
 				smooth: false
 				cache: true
-				anchors.fill: parent
-				anchors.leftMargin: C.spacing.small
-				anchors.rightMargin: C.spacing.small
+				anchors.centerIn: parent
+				width: C.barWidth
+				height: C.barWidth
 			}
-
-			onClicked: event => root.togglePopup(bluetoothButton, "BluetoothWidget.qml")
 		}
 
 		BatteryIcon {
@@ -237,6 +271,7 @@ PanelWindow {
 		Text {
 			text: Qt.formatDateTime(Time.date, "hh\nmm")
 			textFormat: Text.PlainText
+			horizontalAlignment: Text.AlignHCenter
 			lineHeight: 0.8
 			Layout.alignment: Qt.AlignCenter
 			Layout.bottomMargin: C.spacing.small
