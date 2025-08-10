@@ -21,7 +21,6 @@ T.TextField {
 		color: control.placeholderTextColor
 		elide: Text.ElideRight
 		font: control.font
-		verticalAlignment: Text.AlignVCenter
 		visible: !control.length
 		anchors {
 			fill: parent
