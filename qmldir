@@ -3,6 +3,7 @@ singleton C 1.0 C.qml
 singleton Time 1.0 Time.qml
 Ripple 1.0 Ripple.qml
 TextField 1.0 TextField.qml
+Switch 1.0 Switch.qml
 singleton LockScreen 1.0 LockScreen.qml
 Wallpaper 1.0 Wallpaper.qml
 Bar 1.0 Bar.qml
