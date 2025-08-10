@@ -65,6 +65,7 @@ PanelWindow {
 			}
 			Connections {
 				target: loader.item
+				ignoreUnknownSignals: true
 				function onFinished(): void {
 					content.state = "hidden";
 				}
@@ -208,8 +209,29 @@ PanelWindow {
 			Layout.alignment: Qt.AlignHCenter
 		}
 
+		MouseArea {
+			cursorShape: Qt.PointingHandCursor
+			Layout.fillWidth: true
+			implicitHeight: width
+
+			Image {
+				id: bluetoothButton
+				source: "bluetooth.svg"
+				sourceSize.width: 4 * 32
+				sourceSize.height: 4 * 32
+				fillMode: Image.PreserveAspectCrop
+				smooth: false
+				cache: true
+				anchors.fill: parent
+				anchors.leftMargin: C.spacing.small
+				anchors.rightMargin: C.spacing.small
+			}
+
+			onClicked: event => root.togglePopup(bluetoothButton, "BluetoothWidget.qml")
+		}
+
 		BatteryIcon {
-			Layout.alignment: Qt.AlignHCenter
+			Layout.alignment: Qt.AlignCenter
 		}
 
 		Text {

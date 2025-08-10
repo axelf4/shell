@@ -70,5 +70,5 @@ Singleton {
 	readonly property int radius: 8
 	readonly property int radiusFull: 2147483647
 
-	readonly property int barWidth: 35
+	readonly property int barWidth: 32
 }

@@ -5,10 +5,11 @@ Ripple 1.0 Ripple.qml
 TextField 1.0 TextField.qml
 Switch 1.0 Switch.qml
 singleton LockScreen 1.0 LockScreen.qml
+singleton NotificationManager 1.0 NotificationManager.qml
+NotificationWindow 1.0 NotificationWindow.qml
 Wallpaper 1.0 Wallpaper.qml
 Bar 1.0 Bar.qml
 BatteryIcon 1.0 BatteryIcon.qml
 SysTray 1.0 SysTray.qml
 Launcher 1.0 Launcher.qml
-singleton NotificationManager 1.0 NotificationManager.qml
-NotificationWindow 1.0 NotificationWindow.qml
+BluetoothWidget 1.0 BluetoothWidget.qml
