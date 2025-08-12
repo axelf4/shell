@@ -8,8 +8,7 @@ Item {
 	Text {
 		textFormat: Text.PlainText
 		text: Bluetooth.defaultAdapter.enabled ? "On" : "Off"
-		anchors.left: parent.left
-		anchors.margins: C.spacing.normal
+		x: C.spacing.normal
 		anchors.verticalCenter: onSwitch.verticalCenter
 		font.pixelSize: C.fontMedium
 		color: C._onSurface
@@ -18,7 +17,6 @@ Item {
 		id: onSwitch
 		checked: Bluetooth.defaultAdapter.enabled
 		onClicked: Bluetooth.defaultAdapter.enabled = checked
-
 		anchors.top: parent.top
 		anchors.right: parent.right
 		anchors.margins: C.spacing.normal
@@ -27,8 +25,7 @@ Item {
 	Text {
 		textFormat: Text.PlainText
 		text: "Discover"
-		anchors.left: parent.left
-		anchors.margins: C.spacing.normal
+		x: C.spacing.normal
 		anchors.verticalCenter: discoverSwitch.verticalCenter
 		font.pixelSize: C.fontMedium
 		color: C._onSurface
@@ -37,7 +34,6 @@ Item {
 		id: discoverSwitch
 		checked: Bluetooth.defaultAdapter.discovering
 		onClicked: Bluetooth.defaultAdapter.discovering = checked
-
 		anchors.top: onSwitch.bottom
 		anchors.right: parent.right
 		anchors.margins: C.spacing.normal
@@ -48,11 +44,11 @@ Item {
 		textFormat: Text.PlainText
 		text: "Devices"
 		color: C.primary
+		font.capitalization: Font.AllUppercase
 		font.pixelSize: C.fontSmall
+		x: C.spacing.normal
 		anchors.top: discoverSwitch.bottom
-		anchors.left: parent.left
 		anchors.topMargin: C.spacing.large
-		anchors.leftMargin: C.spacing.normal
 	}
 
 	ListView {
@@ -60,9 +56,8 @@ Item {
 		delegate: Item {
 			id: node
 			required property BluetoothDevice modelData
-			height: 48
-			anchors.right: parent.right
-			anchors.left: parent.left
+			width: parent.width
+			height: status.y + status.height + C.spacing.small / 2
 
 			Ripple {
 				clip: true
@@ -75,35 +70,35 @@ Item {
 				}
 			}
 
-			Item {
+			Text {
+				id: name
+				textFormat: Text.PlainText
+				text: node.modelData.name
+				verticalAlignment: Text.AlignVCenter
+				font.pixelSize: C.fontMedium
+				color: C._onSurface
 				x: C.spacing.normal
-				anchors.verticalCenter: parent.verticalCenter
-				height: childrenRect.height
-				Text {
-					id: name
-					text: node.modelData.name
-					font.pixelSize: C.fontMedium
-					color: C._onSurface
+				y: C.spacing.small / 2
+				height: contentHeight + (status.visible ? 0 : status.contentHeight)
+			}
+			Text {
+				id: status
+				visible: node.modelData.state !== BluetoothDeviceState.Disconnected
+				textFormat: Text.PlainText
+				text: switch (node.modelData.state) {
+				case BluetoothDeviceState.Connected:
+					return "Connected";
+				case BluetoothDeviceState.Disconnecting:
+					return "Disconnecting";
+				case BluetoothDeviceState.Disconnected:
+					return "Disconnected";
+				case BluetoothDeviceState.Connecting:
+					return "Connecting";
 				}
-				Text {
-					id: status
-					visible: node.modelData.state != BluetoothDeviceState.Disconnected
-					height: visible ? contentHeight : 0
-					text: switch (node.modelData.state) {
-					case BluetoothDeviceState.Connected:
-						return "Connected";
-					case BluetoothDeviceState.Disconnecting:
-						return "Disconnecting";
-					case BluetoothDeviceState.Disconnected:
-						return "Disconnected";
-					case BluetoothDeviceState.Connecting:
-						return "Connecting";
-					}
-					font.pixelSize: C.fontSmall
-					color: C.primary
-					anchors.top: name.bottom
-					anchors.left: name.left
-				}
+				font.pixelSize: C.fontSmall
+				color: C.primary
+				x: C.spacing.normal
+				y: name.contentHeight
 			}
 		}
 		clip: true
