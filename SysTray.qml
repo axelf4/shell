@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Effects
 import Quickshell
-import Quickshell.Widgets
 import Quickshell.Services.SystemTray
 
 Column {
@@ -11,7 +10,7 @@ Column {
 
 		acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
 		cursorShape: Qt.PointingHandCursor
-		width: 20
+		width: parent.width
 		height: width
 
 		onClicked: event => {
@@ -30,7 +29,7 @@ Column {
 			anchor.edges: Edges.Top | Edges.Right
 		}
 
-		IconImage {
+		Image {
 			id: icon
 			source: {
 				let icon = item.modelData.icon;
@@ -41,7 +40,9 @@ Column {
 				icon;
 			}
 			asynchronous: true
-			anchors.fill: parent
+			anchors.centerIn: parent
+			width: 20
+			height: width
 
 			layer.enabled: true
 			layer.effect: MultiEffect {
@@ -65,7 +66,6 @@ Column {
 			easing.bezierCurve: C.easing.emphasizedDecel
         }
     }
-
 	move: Transition {
         NumberAnimation {
             properties: "x,y"

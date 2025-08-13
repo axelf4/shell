@@ -238,7 +238,7 @@ PanelWindow {
 		}
 
 		SysTray {
-			Layout.alignment: Qt.AlignHCenter
+			Layout.fillWidth: true
 		}
 
 		IconButton {
