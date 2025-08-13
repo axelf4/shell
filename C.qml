@@ -36,6 +36,7 @@ Singleton {
         readonly property color primary30: "#4F378B"
         readonly property color primary80: "#D0BCFF"
         readonly property color primary90: "#EADDFF"
+        readonly property color secondary30: "#4A4458"
         readonly property color neutral6: "#141218"
         readonly property color neutral12: "#211F26"
         readonly property color neutral22: "#36343B"
@@ -53,6 +54,7 @@ Singleton {
 	readonly property color _onPrimary: palette.primary20
 	readonly property color primaryContainer: palette.primary30
 	readonly property color _onPrimaryContainer: palette.primary90
+	readonly property color secondaryContainer: palette.secondary30
 	readonly property color error: palette.error80
 	readonly property color surface: palette.neutral6
 	readonly property color _onSurface: palette.neutral90
@@ -61,6 +63,7 @@ Singleton {
 	readonly property color surfaceContainer: palette.neutral12
 	readonly property color surfaceContainerHighest: palette.neutral22
 	readonly property color outline: palette.neutralVariant60
+	readonly property color outlineVariant: palette.neutralVariant30
 
 	readonly property int fontTiny: 10
 	readonly property int fontSmall: 13
