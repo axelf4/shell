@@ -242,12 +242,12 @@ PanelWindow {
 		}
 
 		IconButton {
-			popupSource: "Mixer.qml"
+			popupSource: "AudioWidget.qml"
 			Image {
 				anchors.fill: parent
-				source: Quickshell.iconPath("nix-snowflake-white")
-				sourceSize.width: 2 * width
-				sourceSize.height: 2 * height
+				source: "audio.svg"
+				sourceSize.width: width
+				sourceSize.height: height
 
 				layer.enabled: true
 				layer.effect: MultiEffect {
