@@ -5,6 +5,7 @@ Ripple 1.0 Ripple.qml
 TextField 1.0 TextField.qml
 Switch 1.0 Switch.qml
 Slider 1.0 Slider.qml
+Button 1.0 Button.qml
 singleton LockScreen 1.0 LockScreen.qml
 singleton NotificationManager 1.0 NotificationManager.qml
 NotificationWindow 1.0 NotificationWindow.qml
