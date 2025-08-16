@@ -3,7 +3,6 @@ import QtQuick.Templates as T
 
 T.Switch {
 	id: control
-	readonly property int outlineWidth: 2
 	implicitWidth: implicitBackgroundWidth
 	implicitHeight: implicitBackgroundHeight
 
@@ -14,7 +13,7 @@ T.Switch {
 		radius: C.radiusFull
 		border {
 			color: control.checked ? color : control.enabled ? C.outline : C._onSurface
-			width: control.outlineWidth
+			width: 2
 		}
 		color: control.checked ? (control.enabled ? C.primary : C._onSurface) //
 		: C.surfaceContainerHighest
@@ -40,7 +39,7 @@ T.Switch {
 
 	// Handle
 	indicator: Rectangle {
-		x: control.outlineWidth + control.visualPosition * (parent.width - control.outlineWidth - width)
+		x: y + control.visualPosition * (parent.width - 2 * y - width)
 		anchors.verticalCenter: parent.verticalCenter
 		width: 28
 		height: 28
