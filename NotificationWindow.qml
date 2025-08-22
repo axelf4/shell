@@ -1,5 +1,6 @@
 import QtQuick
 import Quickshell
+import Quickshell.Services.Notifications
 
 PanelWindow {
 	// TODO screen: Quickshell.primaryScreen
@@ -19,31 +20,23 @@ PanelWindow {
 
 	component NotificationWidget: Rectangle {
 		id: notif
-		required property int index
-		required property Timer timer
-		required property string image
-		required property string summary
-		required property string body
+		required property Notification modelData
 		radius: C.radius
 		color: C.surface
 
 		width: parent?.width
 		height: body.y + body.height + C.spacing.normal
 
+		RetainableLock {
+			locked: true
+			object: notif.modelData
+		}
+
 		MouseArea {
-			property double start: 0
 			anchors.fill: parent
-			drag.axis: Drag.XAxis
-			drag.target: notif
-			drag.minimumX: 0
 			hoverEnabled: true
-			onEntered: notif.timer.stop()
-			onClicked: NotificationManager.dismiss(notif.index)
-			onPressed: mouse => start = mouse.x
-			onReleased: mouse => {
-				if (drag.active)
-					NotificationManager.dismiss(notif.index);
-			}
+			onEntered: notif.modelData.timer.stop()
+			onClicked: notif.modelData.dismiss()
 		}
 
 		Ripple {
@@ -53,7 +46,7 @@ PanelWindow {
 		Image {
 			id: icon
 			asynchronous: true
-			source: notif.image
+			source: notif.modelData.image || notif.modelData.appIcon
 			sourceSize.width: width
 			sourceSize.height: height
 			x: C.spacing.normal
@@ -65,7 +58,7 @@ PanelWindow {
 		Text {
 			id: summary
 			textFormat: Text.PlainText
-			text: notif.summary
+			text: notif.modelData.summary
 			elide: Text.ElideRight
 			font.bold: true
 			font.pixelSize: C.fontSmall
@@ -79,7 +72,7 @@ PanelWindow {
 		Text {
 			id: body
 			textFormat: Text.MarkdownText
-			text: notif.body
+			text: notif.modelData.body
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			font.pixelSize: C.fontTiny
 			color: C._onSurface
@@ -95,7 +88,6 @@ PanelWindow {
 
 	ListView {
 		id: list
-		/* verticalLayoutDirection: ListView.BottomToTop */
 		model: NotificationManager.notifications
 		delegate: NotificationWidget {}
 
