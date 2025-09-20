@@ -19,9 +19,9 @@ Item {
 		anchors.left: parent.left
 		anchors.margins: C.spacing.large
 
-		onAccepted: list.currentItem?.launch();
+		onAccepted: list.currentItem?.launch()
 		Keys.onPressed: event => {
-			if (event.key === Qt.Key_Backspace && text === "")
+			if (event.key === Qt.Key_Backspace && !length)
 				root.finished();
 		}
 		Keys.forwardTo: [list]
@@ -30,7 +30,6 @@ Item {
 	component AppDelegate: Item {
 		id: app
 		readonly property int iconSize: 32
-		required property int index
 		required property DesktopEntry modelData
 		width: parent.width
 		height: iconSize + C.spacing.small
@@ -79,13 +78,13 @@ Item {
 		}
 		reuseItems: true
 		clip: true
+		spacing: 0
 
 		anchors.top: input.bottom
 		anchors.right: parent.right
 		anchors.bottom: parent.bottom
 		anchors.left: parent.left
 		anchors.topMargin: C.spacing.large
-		spacing: 0
 
 		MouseArea {
 			anchors.fill: parent

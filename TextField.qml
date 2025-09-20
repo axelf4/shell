@@ -15,6 +15,8 @@ T.TextField {
 	color: C._onSurface
 	placeholderTextColor: C.primary
 	font.pixelSize: C.fontMedium
+	passwordCharacter: "●"
+	passwordMaskDelay: 0
 
 	Text {
 		text: control.placeholderText

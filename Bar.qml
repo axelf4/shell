@@ -265,7 +265,6 @@ PanelWindow {
 				sourceSize.height: 4 * 32
 				fillMode: Image.PreserveAspectCrop
 				smooth: false
-				cache: true
 				anchors.centerIn: parent
 				width: C.barWidth
 				height: C.barWidth

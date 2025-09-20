@@ -90,7 +90,6 @@ Singleton {
 					anchors.fill: parent
 					fillMode: Image.PreserveAspectCrop
 					source: "/home/axel/Pictures/wallpaper.jpg"
-					cache: true
 					smooth: false
 
 					layer.enabled: true
@@ -116,8 +115,6 @@ Singleton {
 					id: input
 					placeholderText: "Enter Password"
 					echoMode: TextInput.Password
-					passwordCharacter: "●"
-					passwordMaskDelay: 0
 					enabled: !pam.active
 					focus: true
 					backgroundColor: C.surface
