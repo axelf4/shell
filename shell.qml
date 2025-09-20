@@ -6,6 +6,7 @@ import Quickshell
 
 ShellRoot {
 	NotificationWindow {}
+	Bar {}
 
 	Variants {
 		model: Quickshell.screens
@@ -15,9 +16,6 @@ ShellRoot {
 			required property ShellScreen modelData
 
 			Wallpaper {
-				screen: root.modelData
-			}
-			Bar {
 				screen: root.modelData
 			}
 		}
