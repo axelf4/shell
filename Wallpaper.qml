@@ -16,7 +16,7 @@ PanelWindow {
 
 	Image {
 		fillMode: Image.PreserveAspectCrop
-		source: "/home/axel/Pictures/dlw56yjfrvwd1.jpg"
+		source: "/home/axel/Pictures/wallpaper.jpg"
 		asynchronous: true
 		retainWhileLoading: true
 
