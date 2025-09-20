@@ -63,7 +63,7 @@ Item {
 	}
 
 	function nodeName(n: PwNode): string {
-		return n.nickname || n.description || n.name;
+		return n ? n.nickname || n.description || n.name : "";
 	}
 
 	Controls.SwipeView {
@@ -102,7 +102,7 @@ Item {
 
 				Slider {
 					value: node.modelData.audio?.volume ?? 0
-					onValueChanged: node.modelData.audio.volume = value
+					onMoved: node.modelData.audio.volume = value
 					anchors {
 						top: name.bottom
 						left: name.left
