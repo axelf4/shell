@@ -9,6 +9,7 @@ Button 1.0 Button.qml
 singleton LockScreen 1.0 LockScreen.qml
 singleton NotificationManager 1.0 NotificationManager.qml
 NotificationWindow 1.0 NotificationWindow.qml
+AuthDialog 1.0 AuthDialog.qml
 Wallpaper 1.0 Wallpaper.qml
 Bar 1.0 Bar.qml
 BatteryIcon 1.0 BatteryIcon.qml

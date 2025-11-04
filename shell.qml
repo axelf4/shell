@@ -6,6 +6,7 @@ import Quickshell
 
 ShellRoot {
 	NotificationWindow {}
+	AuthDialog {}
 	Bar {}
 
 	Variants {
