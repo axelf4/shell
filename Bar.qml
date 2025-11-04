@@ -45,6 +45,11 @@ PanelWindow {
 			}
 			state: "hidden"
 
+			Shortcut {
+				sequences: [StandardKey.Cancel]
+				onActivated: content.state = "hidden"
+			}
+
 			RectangularShadow {
 				anchors.fill: parent
 				blur: 10
@@ -147,13 +152,6 @@ PanelWindow {
 					}
 				}
 			]
-
-			Keys.onPressed: event => {
-				if (event.key === Qt.Key_Escape) {
-					content.state = "hidden";
-					event.accepted = true;
-				}
-			}
 		}
 	}
 
