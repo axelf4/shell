@@ -75,14 +75,15 @@ Item {
 		topPadding: C.spacing.normal
 
 		ListView {
-			model: Pipewire.nodes
+			model: ScriptModel {
+				values: Pipewire.nodes.values.filter(n => n.isSink && !n.isStream)
+			}
 			delegate: Item {
 				id: node
 				required property PwNode modelData
-				visible: modelData.isSink && !modelData.isStream
 				implicitHeight: childrenRect.height
-				width: parent.width
-				height: visible ? implicitHeight + C.spacing.normal : 0
+				width: parent?.width ?? 0
+				height: implicitHeight + C.spacing.normal
 
 				PwObjectTracker {
 					objects: [node.modelData]
@@ -114,14 +115,15 @@ Item {
 		}
 
 		ListView {
-			model: Pipewire.nodes
+			model: ScriptModel {
+				values: Pipewire.nodes.values.filter(n => n.isStream && n.audio)
+			}
 			delegate: Item {
 				id: node
 				required property PwNode modelData
-				visible: modelData.isStream && modelData.audio
 				implicitHeight: childrenRect.height
-				width: parent.width
-				height: visible ? implicitHeight + C.spacing.normal : 0
+				width: parent?.width ?? 0
+				height: implicitHeight + C.spacing.normal
 
 				PwObjectTracker {
 					objects: [node.modelData]
